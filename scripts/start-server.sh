@@ -55,72 +55,12 @@ else
 fi
 
 echo "---Prepare Server---"
-echo "---Looking for config files---"
-if [ ! -d ${SERVER_DIR}/Astro/Saved/Config/WindowsServer ]; then
-  mkdir -p ${SERVER_DIR}/Astro/Saved/Config/WindowsServer
-fi
-if [ ! -f ${SERVER_DIR}/Astro/Saved/Config/WindowsServer/AstroServerSettings.ini ]; then
-  echo "[/Script/Astro.AstroServerSettings]
-bLoadAutoSave=True
-MaxServerFramerate=30.000000
-MaxServerIdleFramerate=3.000000
-bWaitForPlayersBeforeShutdown=False
-ConsolePassword=adminDocker
-PublicIP=
-ServerName=AstroneerDocker
-ServerGuid=
-OwnerName=
-OwnerGuid=0
-PlayerActivityTimeout=0
-ServerPassword=Docker
-bDisableServerTravel=False
-DenyUnlistedPlayers=False
-VerbosePlayerProperties=False
-AutoSaveGameInterval=900
-BackupSaveGamesInterval=7200
-ActiveSaveFileDescriptiveName=SAVE_1
-ServerAdvertisedName=" > ${SERVER_DIR}/Astro/Saved/Config/WindowsServer/AstroServerSettings.ini
+echo "---Checking for config directory---"
+if [ ! -d ${SERVER_DIR}/FactoryGame/Saved/Config/WindowsServer ]; then
+  mkdir -p ${SERVER_DIR}/FactoryGame/Saved/Config/WindowsServer
+  echo "---Config directory created---"
 else
-  echo "---'AstroServerSettings.ini' found---"
-fi
-if [ ! -f ${SERVER_DIR}/Astro/Saved/Config/WindowsServer/Engine.ini ]; then
-  echo "[URL]
-Port=8777
-
-[SystemSettings]
-net.AllowEncryption=False" > ${SERVER_DIR}/Astro/Saved/Config/WindowsServer/Engine.ini
-else
-  echo "---'Engine.ini' found---"
-  sed -i '/^HeartbeatInterval=0/d' ${SERVER_DIR}/Astro/Saved/Config/WindowsServer/AstroServerSettings.ini
-fi
-
-echo "---Checking if PublicIP is in place---"
-PUBLIC_IP="$(cat ${SERVER_DIR}/Astro/Saved/Config/WindowsServer/AstroServerSettings.ini | grep "PublicIP=" | cut -d '=' -f2)"
-if [ -z "${PUBLIC_IP}" ]; then
-  echo "---No PublicIP found in AstroServerSettings.ini, trying to obtain it...---"
-  PUBLIC_IP="$(wget -qO - icanhazip.com)"
-  if [ -z "${PUBLIC_IP}" ]; then
-    echo "---Can't get PublicIP, please set it manually in your AstroServerSettings.ini!---"
-  else
-    echo "---Sucessfully obtained PublicIP: ${PUBLIC_IP}, adding to AstroServerSettings.ini"
-    sed -i "s/PublicIP=.*/PublicIP=${PUBLIC_IP}/g" ${SERVER_DIR}/Astro/Saved/Config/WindowsServer/AstroServerSettings.ini
-  fi
-else
-  if [ "${UPDATE_PUBLIC_IP}" == "true" ]; then
-    NEW_PUBLIC_IP="$(wget -qO - icanhazip.com)"
-    if [ -z "${NEW_PUBLIC_IP}" ]; then
-      echo "---Can't get PublicIP, please set it manually in your AstroServerSettings.ini!---"
-    else
-      if [ "${PUBLIC_IP}" != "${NEW_PUBLIC_IP}" ]; then
-        echo "---Changing PublicIP in AstroServerSettings.ini to: ${NEW_PUBLIC_IP}!---"
-        sed -i "s/PublicIP=.*/PublicIP=${NEW_PUBLIC_IP}/g" ${SERVER_DIR}/Astro/Saved/Config/WindowsServer/AstroServerSettings.ini
-      else
-        echo "---Nothing to do, PublicIP: ${PUBLIC_IP} still up-to-date!---"
-      fi
-    fi
-  else
-    echo "---PublicIP in AstroServerSettings.ini found: ${PUBLIC_IP}"
-  fi
+  echo "---Config directory found---"
 fi
 
 export WINEARCH=win64
@@ -148,19 +88,9 @@ chmod -R ${DATA_PERM} ${DATA_DIR}
 echo "---Server ready---"
 echo
 echo "+--------------------------------------------------------------------------"
-echo "| Please don't forget to add this entry to your Engine.ini on your Clients:"
+echo "| Foundry Dedicated Server"
+echo "| Server is ready to accept connections"
 echo "+--------------------------------------------------------------------------"
-echo
-echo "[SystemSettings]"
-echo "net.AllowEncryption=False"
-echo
-echo "+-------------------------------------------------------------------------------"
-echo "| ATTENTION: If a client tries to connect without that in Engine.ini, the server"
-echo "| will be left in a semi bricked state and you have to restart the container!"
-echo "|"
-echo "| You can find the file on your local Windows machine at:"
-echo "| %localappdata%\Astro\Saved\Config\WindowsNoEditor"
-echo "+-------------------------------------------------------------------------------"
 echo
 
 if [ "${BACKUP}" == "true" ]; then
@@ -173,4 +103,4 @@ fi
 
 echo "---Start Server---"
 cd ${SERVER_DIR}
-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24:32' wine64 AstroServer.exe ${GAME_PARAMS}
+xvfb-run --auto-servernum --server-args='-screen 0 640x480x24:32' wine64 FoundryDedicatedServer.exe ${GAME_PARAMS}
