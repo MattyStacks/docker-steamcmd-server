@@ -55,13 +55,28 @@ else
 fi
 
 echo "---Prepare Server---"
-echo "---Checking for config directory---"
-if [ ! -d ${SERVER_DIR}/FactoryGame/Saved/Config/WindowsServer ]; then
-  mkdir -p ${SERVER_DIR}/FactoryGame/Saved/Config/WindowsServer
-  echo "---Config directory created---"
-else
-  echo "---Config directory found---"
+echo "---Creating app.cfg for Foundry---"
+cat > ${SERVER_DIR}/app.cfg << EOF
+server_name=${SERVER_NAME}
+server_world_name=${SERVER_WORLD_NAME}
+server_port=${SERVER_PORT}
+server_query_port=${SERVER_QUERY_PORT}
+server_max_players=${SERVER_MAX_PLAYERS}
+server_is_public=${SERVER_IS_PUBLIC}
+pause_server_when_empty=${PAUSE_WHEN_EMPTY}
+autosave_interval=${AUTOSAVE_INTERVAL}
+EOF
+
+if [ ! -z "${SERVER_PASSWORD}" ]; then
+  echo "server_password=${SERVER_PASSWORD}" >> ${SERVER_DIR}/app.cfg
 fi
+
+if [ ! -z "${MAP_SEED}" ]; then
+  echo "mapseed=${MAP_SEED}" >> ${SERVER_DIR}/app.cfg
+fi
+
+echo "---app.cfg created---"
+cat ${SERVER_DIR}/app.cfg
 
 export WINEARCH=win64
 export WINEPREFIX=/serverdata/serverfiles/WINE64
