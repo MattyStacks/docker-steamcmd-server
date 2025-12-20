@@ -73,7 +73,7 @@ if [ ! -z "${SERVER_PASSWORD}" ]; then
 fi
 
 if [ ! -z "${MAP_SEED}" ]; then
-  echo "mapseed=${MAP_SEED}" >> "${FOUNDRY_DIR}/app.cfg"
+  echo "mapseed=${MAP_SEED}" >> "${SERVER_DIR}/app.cfg"
 fi
 
 echo "---app.cfg created---"
