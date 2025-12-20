@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.authors="steamcmd.washstand773@aleeas.com"
 LABEL org.opencontainers.image.source="https://github.com/MattyStacks/docker-steamcmd-server"
 LABEL org.opencontainers.image.description="A Docker image to run SteamCMD for a dedicated foundry game server."
 LABEL org.opencontainers.image.version="foundry"
-
+LABEL description="A dockercmd image to run SteamCMD for a dedicated foundry game server."
 
 RUN dpkg --add-architecture i386 && \
 	apt-get update && \
