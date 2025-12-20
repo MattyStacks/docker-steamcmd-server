@@ -2,6 +2,9 @@ FROM ich777/winehq-baseimage
 
 LABEL org.opencontainers.image.authors="steamcmd.washstand773@aleeas.com"
 LABEL org.opencontainers.image.source="https://github.com/mattystacks/docker-steamcmd-server"
+LABEL org.opencontainers.image.description="A Docker image to run SteamCMD for a dedicated foundry game server."
+LABEL org.opencontainers.image.version="foundry"
+
 
 RUN dpkg --add-architecture i386 && \
 	apt-get update && \
@@ -17,7 +20,7 @@ ENV VALIDATE=""
 ENV BACKUP="false"
 ENV BACKUP_INTERVAL=360
 ENV BACKUPS_TO_KEEP=8
-ENV SERVER_NAME="Foundry Docker Server"
+ENV SERVER_NAME="FoundryDockerServer"
 ENV SERVER_PASSWORD=""
 ENV SERVER_WORLD_NAME="FoundryWorld"
 ENV SERVER_PORT=3724
