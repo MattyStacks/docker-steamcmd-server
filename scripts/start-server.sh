@@ -54,9 +54,11 @@ else
     fi
 fi
 
+
 echo "---Prepare Server---"
 echo "---Creating app.cfg for Foundry---"
-cat > ${SERVER_DIR}/app.cfg << EOF
+FOUNDRY_DIR="${SERVER_DIR}/steamapps/common/FOUNDRY Dedicated Server"
+cat > "${FOUNDRY_DIR}/app.cfg" << EOF
 server_name=${SERVER_NAME}
 server_world_name=${SERVER_WORLD_NAME}
 server_port=${SERVER_PORT}
@@ -68,18 +70,18 @@ autosave_interval=${AUTOSAVE_INTERVAL}
 EOF
 
 if [ ! -z "${SERVER_PASSWORD}" ]; then
-  echo "server_password=${SERVER_PASSWORD}" >> ${SERVER_DIR}/app.cfg
+  echo "server_password=${SERVER_PASSWORD}" >> "${FOUNDRY_DIR}/app.cfg"
 fi
 
 if [ ! -z "${MAP_SEED}" ]; then
-  echo "mapseed=${MAP_SEED}" >> ${SERVER_DIR}/app.cfg
+  echo "mapseed=${MAP_SEED}" >> "${FOUNDRY_DIR}/app.cfg"
 fi
 
 echo "---app.cfg created---"
-cat ${SERVER_DIR}/app.cfg
+cat "${FOUNDRY_DIR}/app.cfg"
 
 export WINEARCH=win64
-export WINEPREFIX=/serverdata/serverfiles/WINE64
+export WINEPREFIX=${SERVER_DIR}/WINE64
 export WINEDEBUG=-all
 echo "---Checking if WINE workdirectory is present---"
 if [ ! -d ${SERVER_DIR}/WINE64 ]; then
@@ -117,5 +119,5 @@ if [ "${BACKUP}" == "true" ]; then
 fi
 
 echo "---Start Server---"
-cd ${SERVER_DIR}
+cd "${SERVER_DIR}/steamapps/common/FOUNDRY Dedicated Server"
 xvfb-run --auto-servernum --server-args='-screen 0 640x480x24:32' wine64 FoundryDedicatedServer.exe ${GAME_PARAMS}
