@@ -60,10 +60,19 @@ docker run --name Foundry -d \
   --env 'GID=100' \
   --volume /path/to/steamcmd:/serverdata/steamcmd \
   --volume /path/to/foundry:/serverdata/serverfiles \
-  ghcr.io/YOUR_USERNAME/docker-steamcmd-server:foundry
+  ghcr.io/mattystacks/steamcmd:foundry
 ```
 
 This Docker was mainly edited for better use with Unraid, if you don't use Unraid you should definitely try it!
+
+## Backup System
+
+When `BACKUP=true`, the container will automatically backup your Foundry save files:
+- Backups are stored in `/serverdata/serverfiles/Backups/`
+- Creates timestamped archives (YYYY-MM-DD_HH.MM.SS.tar.gz)
+- Runs every `BACKUP_INTERVAL` minutes (default: 360 = 6 hours)
+- Keeps the most recent `BACKUPS_TO_KEEP` backups (default: 8)
+- Automatically cleans up old backups
 
 ## Troubleshooting
 
