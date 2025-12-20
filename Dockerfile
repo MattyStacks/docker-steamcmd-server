@@ -1,7 +1,7 @@
 FROM ich777/debian-baseimage:bullseye_amd64
 
 LABEL org.opencontainers.image.authors="steamcmd.washstand773@aleeas.com"
-LABEL org.opencontainers.image.source="https://github.com/mattystacks/docker-steamcmd-server"
+LABEL org.opencontainers.image.source="https://github.com/MattyStacks/docker-steamcmd-server"
 LABEL org.opencontainers.image.description="SteamCMD base image for game server Docker containers"
 LABEL org.opencontainers.image.version="master"
 
