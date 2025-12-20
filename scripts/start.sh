@@ -26,8 +26,8 @@ chown -R ${UID}:${GID} ${DATA_DIR}
 
 echo "---Starting...---"
 term_handler() {
-	kill -SIGKILL $(pidof AstroServer.exe)
-	tail --pid=$(pidof AstroServer.exe) -f 2>/dev/null
+	kill -SIGKILL $(pidof FoundryDedicatedServer.exe)
+	tail --pid=$(pidof FoundryDedicatedServer.exe) -f 2>/dev/null
 	exit 143;
 }
 
