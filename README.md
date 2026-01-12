@@ -65,6 +65,45 @@ docker run --name Foundry -d \
 
 This Docker was mainly edited for better use with Unraid, if you don't use Unraid you should definitely try it!
 
+## Available Images
+
+Docker images are automatically built and published to both registries for different game servers:
+
+### GitHub Container Registry (GHCR)
+```
+ghcr.io/mattystacks/steamcmd:<game-name>
+```
+
+### Docker Hub
+```
+docker.io/mattystacks/steamcmd:<game-name>
+```
+
+**Available game tags:**
+- `foundry` - Foundry Dedicated Server
+- `valheim` - Valheim Dedicated Server
+- *(Additional game servers may be available - check the repository branches)*
+
+**Example pulls:**
+```bash
+# From GitHub Container Registry
+docker pull ghcr.io/mattystacks/steamcmd:foundry
+
+# From Docker Hub
+docker pull mattystacks/steamcmd:foundry
+```
+
+## CI/CD Automation
+
+This repository uses GitHub Actions to automatically build and publish Docker images:
+
+- **Automatic Builds**: Images are built automatically when changes are pushed to game-specific branches
+- **Multi-Registry Publishing**: Images are simultaneously published to both GitHub Container Registry (ghcr.io) and Docker Hub
+- **Branch-Based Tagging**: Each branch name corresponds to a game server type (e.g., `foundry` branch creates `steamcmd:foundry` image)
+- **Manual Triggers**: Workflows can be manually triggered from the GitHub Actions UI
+
+For more details, see [`.github/workflows/build-game-image.yml`](.github/workflows/build-game-image.yml)
+
 ## Backup System
 
 When `BACKUP=true`, the container will automatically backup your Foundry save files:
